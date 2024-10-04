@@ -6,16 +6,22 @@ option java_outer_classname = "FileServiceProto";
 
 service FileService {
     rpc ProcessFile (FileRequest) returns (FileResponse);
+    rpc Ping (PingRequest) returns (PingResponse);
 }
 
 message FileRequest {
     string fileName = 1;
     bytes fileData = 2;
     string uid = 3;
-    string fingerPrint = 4;
 }
 
 message FileResponse {
     string message = 1;
     bool success = 2;
+}
+
+message PingRequest { }
+
+message PingResponse {
+    string message = 1;
 }

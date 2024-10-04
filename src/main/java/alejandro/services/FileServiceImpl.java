@@ -1,8 +1,6 @@
 package alejandro.services;
 
-import alejandro.grpc.proto.FileRequest;
-import alejandro.grpc.proto.FileResponse;
-import alejandro.grpc.proto.FileServiceGrpc;
+import alejandro.grpc.proto.*;
 import alejandro.helper.FileValidator;
 import alejandro.rmi.RmiClient;
 import io.grpc.stub.StreamObserver;
@@ -14,11 +12,9 @@ public class FileServiceImpl extends FileServiceGrpc.FileServiceImplBase {
 
     @Override
     public void processFile(FileRequest request, StreamObserver<FileResponse> responseObserver) {
-        System.out.println("baby me gustas mas que el red velvet");
         byte[] fileContent = request.getFileData().toByteArray();
         String fileName = request.getFileName();
         String uid = request.getUid();
-        String fingerprint = request.getFingerPrint();
 
         FileValidator fileValidator = new FileValidator();
         if (!fileValidator.validateFile(fileContent, fileName)) {
@@ -33,7 +29,7 @@ public class FileServiceImpl extends FileServiceGrpc.FileServiceImplBase {
         }
 
         RmiClient rmiClient = new RmiClient();
-        rmiClient.processWork(fileContent, fileName, uid, fingerprint);
+        rmiClient.processWork(fileContent, fileName, uid);
 
         FileResponse response = FileResponse.newBuilder()
                 .setMessage("The cluster is now processing your File.")
@@ -42,5 +38,16 @@ public class FileServiceImpl extends FileServiceGrpc.FileServiceImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
         logger.info("The file {} is being processed", fileName);
+    }
+
+    @Override
+    public void ping(PingRequest request, StreamObserver<PingResponse> responseObserver) {
+        PingResponse response = PingResponse.newBuilder()
+                .setMessage("Pong!")
+                .build();
+
+        logger.info("Pong!!!");
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

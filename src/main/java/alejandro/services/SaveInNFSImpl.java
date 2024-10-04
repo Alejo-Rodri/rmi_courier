@@ -16,11 +16,11 @@ public class SaveInNFSImpl extends UnicastRemoteObject implements Courier {
     }
 
     @Override
-    public void saveFileInNFS(byte[] fileData, String fileName, String uid, String fingerprint) {
+    public void saveFileInNFS(byte[] fileData, String fileName, String uid) {
         try {
             GrpcClient grpcClient = new GrpcClient();
-            if (grpcClient.uploadFileToNFS(fileData, fileName, fingerprint, uid))
-                logger.info("{} uploaded no nfs server correctly.", fileName);
+            if (grpcClient.uploadFileToNFS(fileData, fileName, uid))
+                logger.info("{} uploaded to nfs server correctly.", fileName);
             else logger.info("{} couldnt be uploaded to nfs server.", fileName);
         } catch (Exception e) {
             logger.error("Error while saving file in nfs server", e);

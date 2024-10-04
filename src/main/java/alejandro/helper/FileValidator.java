@@ -3,7 +3,7 @@ package alejandro.helper;
 import java.io.File;
 
 public class FileValidator {
-    private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 5MB
 
     public boolean isFileEmpty(byte[] fileData) {
         return fileData.length == 0;
@@ -19,7 +19,14 @@ public class FileValidator {
         return fileExtension.equalsIgnoreCase("c");
     }
 
+    public boolean isFileNameValid(String fileName) {
+        return !fileName.contains(" ");
+    }
+
     public boolean validateFile(byte[] fileData, String fileName) {
-        return isFileSizeValid(fileData) && !isFileEmpty(fileData) && isFileExtensionValid(fileName);
+        return isFileSizeValid(fileData) &&
+                !isFileEmpty(fileData) &&
+                isFileExtensionValid(fileName) &&
+                isFileNameValid(fileName);
     }
 }

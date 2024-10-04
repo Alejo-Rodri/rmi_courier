@@ -27,9 +27,9 @@ public class RmiClient {
         }
     }
 
-    public void processWork(byte[] fileData, String fileName, String uid, String fingerprint) {
+    public void processWork(byte[] fileData, String fileName, String uid) {
         try {
-            clusterInterface.processWork(fileData, fileName, uid, fingerprint);
+            clusterInterface.processWork(fileData, fileName, uid);
         } catch (Exception exception) {
             logger.error("Error in processWork", exception);
         }

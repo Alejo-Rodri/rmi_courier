@@ -18,8 +18,8 @@ public class Environment {
         loadVariables(getPathProperties());
     }
     private String getPathProperties() {
-        return "src/main/resources/var.env";
-        //return "./var.env";
+        //return "src/main/resources/var.env";
+        return "./var.env";
     }
 
     private void loadVariables(String path) {
@@ -40,6 +40,10 @@ public class Environment {
 
             variables.put("THIS_GRPC_SERVER_PORT", properties.getProperty("THIS_GRPC_SERVER_PORT"));
             variables.put("THIS_GRPC_SERVER_HOST", properties.getProperty("THIS_GRPC_SERVER_HOST"));
+
+            variables.put("MONGO_IP", properties.getProperty("MONGO_IP"));
+            variables.put("MONGO_DB", properties.getProperty("MONGO_DB"));
+            variables.put("MONGO_COLLECTION", properties.getProperty("MONGO_COLLECTION"));
         } catch (Exception exception) {
             logger.error("Singleton failed:c", exception);
         }

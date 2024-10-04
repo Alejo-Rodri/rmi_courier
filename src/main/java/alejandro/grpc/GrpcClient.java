@@ -1,5 +1,6 @@
 package alejandro.grpc;
 
+import alejandro.services.MongoServices;
 import alejandro.utils.Environment;
 import com.grpc.demo.services.FilesRouteGrpc;
 import com.grpc.demo.services.Fileserver;
@@ -21,7 +22,7 @@ public class GrpcClient {
         asyncStub = FilesRouteGrpc.newStub(channel);
     }
 
-    public boolean uploadFileToNFS(byte[] fileData, String fileName, String folderFingerprint, String uid) {
+    public boolean uploadFileToNFS(byte[] fileData, String fileName, String uid) {
         try {
             StreamObserver<Fileserver.FileUploadResponse> responseObserver = new StreamObserver<>() {
                 @Override
@@ -37,6 +38,9 @@ public class GrpcClient {
             };
 
             StreamObserver<Fileserver.FileUploadRequest> requestObserver = this.asyncStub.upload(responseObserver);
+
+            MongoServices mongoServices = new MongoServices();
+            String folderFingerprint = mongoServices.getFingerprint(uid);
 
             int chunkSize = 1024;
             int offset = 0;
