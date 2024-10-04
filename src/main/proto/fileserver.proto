@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+option go_package = "infrastructure/grpcserver/services/files";
+option java_package = "com.grpc.demo.services";
+
+package pb;
+
+service FilesRoute {
+  rpc Ping (PingRequest) returns (PingReply);
+
+  rpc CreateFolder (CreateFolderRequest) returns (CreateFolderResponse); 
+  rpc GetProperties (GetFileRequest) returns (GetFileResponse); 
+  rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse); 
+  rpc RenameFile (RenameFileRequest) returns (RenameFileResponse);
+  
+  rpc GetFolderFiles (GetAllFilesRequest) returns (GetAllFilesResponse);  
+  rpc GetSharedFiles (GetSharedFilesRequest) returns (GetSharedFilesResponse);
+  rpc GetHomeFiles (GetHomeFilesRequest) returns (GetHomeFilesResponse);
+  rpc GetAlbumFiles (GetAllImagesRequest) returns (GetAllImagesResponse);
+  rpc GetStreamingFiles (GetAllImagesRequest) returns (GetAllImagesResponse);
+  
+  rpc Upload(stream FileUploadRequest) returns(FileUploadResponse);
+  rpc Download(DownloadRequest) returns (stream DownloadResponse);
+  
+  rpc MoveFile (MoveFileRequest) returns (MoveFileResponse); // **********
+}
+
+message File {
+  string fingerPrint = 1;
+  string name = 2;
+  int64 size = 3;
+  string modified = 4;
+  string permissions = 5;
+  string owner = 6;
+  string mimeType = 7;
+}
+
+message Response {
+  bool succes = 1;
+  uint32 code = 2;
+  string message = 3;
+}
+
+message PingRequest {}
+
+message PingReply {
+  string message = 1;
+}
+
+message GetHomeFilesRequest {
+  string user = 1;
+}
+
+message GetHomeFilesResponse {
+    Response response = 1;
+    repeated File files = 2;
+    string fingerprint = 3;
+}
+
+// --------------------- Get All Files
+message GetAllImagesRequest {
+  string user = 1;
+}
+
+message GetAllImagesResponse {
+  Response response = 1;
+  repeated File files = 2;
+}
+
+
+// --------------------- Get All Files
+message GetAllFilesRequest {
+  string folderFingerprint = 1;
+}
+
+message GetAllFilesResponse {
+  Response response = 1;
+  repeated File files = 2;
+}
+
+// --------------------- Get Shared Files
+message GetSharedFilesRequest {
+  string username = 1;
+}
+
+message GetSharedFilesResponse {
+  // Response response = 2;
+  repeated string files = 1;
+}
+
+// --------------------- Create Folder
+message CreateFolderRequest {
+  string folderFingerprint = 1;
+  string folderName = 2;
+  string owner = 3;
+}
+
+message CreateFolderResponse {
+  Response response = 1;
+  File folder = 2;
+}
+
+// --------------------- Rename File
+message RenameFileRequest {
+  string fingerprint = 1;
+  string newName = 2;
+}
+
+message RenameFileResponse {
+  Response response = 1;
+}
+
+// --------------------- Upload File
+message FileUploadRequest {
+  string fileName = 1;
+  string folderFingerprint = 2;
+  bytes chunk = 3;
+  string username = 4;
+}
+
+message FileUploadResponse {
+  File file = 1;
+}
+ 
+/**
+* Obtiene solo la información de un archivo
+*/
+message GetFileRequest {
+  string fingerprint = 1;
+}
+
+message GetFileResponse {
+  Response response = 1;
+  File file = 2;
+}
+
+// --------------------- Delete File
+message DeleteFileRequest {
+  string fingerprint = 1;
+}
+
+message DeleteFileResponse {
+  Response response = 1;
+}
+
+// --------------------- Move File
+message MoveFileRequest {
+  string folderFingerprint = 1;
+  string newPath = 2;
+}
+
+message MoveFileResponse {
+  Response response = 1;
+}
+
+// --------------------- Download File
+message DownloadRequest {
+  string fingerprint = 1;
+}
+
+message DownloadResponse {
+  bytes chunk = 1;
+}

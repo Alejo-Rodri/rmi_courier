@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_package = "alejandro.grpc.proto";
+option java_multiple_files = true;
+option java_outer_classname = "FileServiceProto";
+
+service FileService {
+    rpc ProcessFile (FileRequest) returns (FileResponse);
+}
+
+message FileRequest {
+    string fileName = 1;
+    bytes fileData = 2;
+    string uid = 3;
+    string fingerPrint = 4;
+}
+
+message FileResponse {
+    string message = 1;
+    bool success = 2;
+}
