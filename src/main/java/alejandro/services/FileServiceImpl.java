@@ -14,6 +14,7 @@ public class FileServiceImpl extends FileServiceGrpc.FileServiceImplBase {
 
     @Override
     public void processFile(FileRequest request, StreamObserver<FileResponse> responseObserver) {
+        System.out.println("baby me gustas mas que el red velvet");
         byte[] fileContent = request.getFileData().toByteArray();
         String fileName = request.getFileName();
         String uid = request.getUid();
