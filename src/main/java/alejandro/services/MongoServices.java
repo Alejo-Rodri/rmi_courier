@@ -16,7 +16,7 @@ public class MongoServices {
     }
 
     public String getFingerprint(String uid) {
-        String path = "/" + uid + "/mpi/";
+        String path = "/" + uid + "/mpi";
         Document document = mongo.getCollection().find(Filters.eq("path", path)).first();
 
         if (document != null) {

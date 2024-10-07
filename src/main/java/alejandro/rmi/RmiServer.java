@@ -17,7 +17,7 @@ public class RmiServer implements Runnable {
 
     public RmiServer() {
         this.ip = Environment.getInstance().getVariables().get("THIS_IP");
-        this.port = Environment.getInstance().getVariables().get("RMI_COURIER_PORT");
+        this.port = Environment.getInstance().getVariables().get("COURIER_PORT");
         String serviceName = Environment.getInstance().getVariables().get("COURIER_SERVICE");
         uri = "//" + this.ip + ":" + this.port + "/" + serviceName;
         logger.info("{} uri:{}", serviceName, uri);

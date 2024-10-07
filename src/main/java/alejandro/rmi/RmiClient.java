@@ -27,11 +27,13 @@ public class RmiClient {
         }
     }
 
-    public void processWork(byte[] fileData, String fileName, String uid) {
+    public boolean processWork(byte[] fileData, String fileName, String uid) {
         try {
             clusterInterface.processWork(fileData, fileName, uid);
+            return true;
         } catch (Exception exception) {
             logger.error("Error in processWork", exception);
+            return false;
         }
     }
 }

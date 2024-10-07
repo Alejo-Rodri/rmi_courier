@@ -29,15 +29,24 @@ public class FileServiceImpl extends FileServiceGrpc.FileServiceImplBase {
         }
 
         RmiClient rmiClient = new RmiClient();
-        rmiClient.processWork(fileContent, fileName, uid);
+        String message;
+        boolean success;
+        if (rmiClient.processWork(fileContent, fileName, uid)) {
+            message = "The cluster is now processing your File.";
+            success = true;
+            logger.info("The file {} is being processed", fileName);
+        } else {
+            message = "Couldnt pass the file to the cluster bruv.";
+            success = false;
+            logger.info("The file {} could not be processed", fileName);
+        }
 
         FileResponse response = FileResponse.newBuilder()
-                .setMessage("The cluster is now processing your File.")
-                .setSuccess(true)
+                .setMessage(message)
+                .setSuccess(success)
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-        logger.info("The file {} is being processed", fileName);
     }
 
     @Override

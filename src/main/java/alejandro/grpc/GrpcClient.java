@@ -18,7 +18,7 @@ public class GrpcClient {
     public GrpcClient() {
         String host = Environment.getInstance().getVariables().get("GRPC_NFS_HOST");
         String port = Environment.getInstance().getVariables().get("GRPC_NFS_PORT");
-        ManagedChannel channel = Grpc.newChannelBuilder(host + "+" + port, InsecureChannelCredentials.create()).build();
+        ManagedChannel channel = Grpc.newChannelBuilder(host + ":" + port, InsecureChannelCredentials.create()).build();
         asyncStub = FilesRouteGrpc.newStub(channel);
     }
 
