@@ -12,8 +12,8 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <grpc.version>1.57.0</grpc.version> <!-- Versión de gRPC -->
-        <protobuf.version>3.24.0</protobuf.version> <!-- Versión de Protobuf -->
+        <grpc.version>1.68.0</grpc.version>
+        <protobuf.version>3.24.0</protobuf.version>
     </properties>
 
     <dependencies>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
-            <version>4.8.0</version>
+            <version>5.0.0</version>
         </dependency>
     </dependencies>
 
@@ -141,6 +141,36 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Shade Plugin for Uber JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <!-- Incluye el archivo del manifiesto para ejecutar el JAR -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>alejandro.Main</mainClass>
+                                    <manifestEntries>
+                                        <Implementation-Version>${version}</Implementation-Version>
+                                        <Main-Class>alejandro.Main</Main-Class>
+                                    </manifestEntries>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>

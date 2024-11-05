@@ -1,7 +1,6 @@
 package alejandro.services;
 
 import alejandro.db.Mongo;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -19,6 +18,7 @@ public class MongoServices {
         String path = "/" + uid + "/mpi";
         Document document = mongo.getCollection().find(Filters.eq("path", path)).first();
 
+        mongo.close();
         if (document != null) {
             logger.info("fingerprint of {} correctly found {}", uid, document.getString("fingerprint"));
             return document.getString("fingerprint");
